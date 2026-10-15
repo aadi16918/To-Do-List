@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List — Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">T</div>
+      <span>To-Do List</span>
+    </div>
+
+    <p class="nav-label">WORKSPACE</p>
+
+    <nav>
+      <a href="#overview" class="nav-item">
+        <span>▦</span> Overview
+      </a>
+
+      <a href="#" class="nav-item active">
+        <span>☷</span> Dashboard
+      </a>
+
+      <a href="#overview" class="nav-item">
+        <span>◷</span> Progress
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="help-card">
+        <div class="help-icon">✦</div>
+        <b>Stay on track</b>
+        <p>Small steps make big progress.</p>
+      </div>
+
+      <div class="profile">
+        <div class="avatar">A</div>
+        <div>
+          <b>Aadii Bhalerao</b>
+          <small>Personal account</small>
+        </div>
+        <span class="dots">•••</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Dashboard -->
+  <main class="main">
+
+    <header class="topbar">
+      <div>
+        <p class="crumb">
+          WORKSPACE <span>/</span> DASHBOARD
+        </p>
+        <h1>Dashboard</h1>
+      </div>
+
+      <div class="top-actions">
+        <label class="search">
+          ⌕
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="Search tasks..."
+          >
+        </label>
+
+        <button class="primary-btn" id="openAdd">
+          ＋ Create New Task
+        </button>
+
+        <div class="avatar top-avatar">A</div>
+      </div>
+    </header>
+
+    <!-- Welcome Section -->
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">YOUR PERSONAL WORKSPACE</p>
+        <h2>Make today count<span>.</span></h2>
+        <p>
+          Organize your tasks and keep your momentum going.
+        </p>
+      </div>
+
+      <div class="welcome-symbol">✦</div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="metrics" id="overview">
+
+      <article class="metric">
+        <div class="metric-top">
+          <span>Total tasks</span>
+          <span class="metric-icon teal">▤</span>
+        </div>
+        <strong id="totalCount">0</strong>
+        <small>Across your workspace</small>
+      </article>
+
+      <article class="metric">
+        <div class="metric-top">
+          <span>In progress</span>
+          <span class="metric-icon orange">◷</span>
+        </div>
+        <strong id="progressCount">0</strong>
+        <small>Work in motion</small>
+      </article>
+
+      <article class="metric">
+        <div class="metric-top">
+          <span>Completed</span>
+          <span class="metric-icon green">✓</span>
+        </div>
+        <strong id="completedCount">0</strong>
+        <small>Look at you go!</small>
+      </article>
+
+      <article class="metric">
+        <div class="metric-top">
+          <span>Completion rate</span>
+          <span class="metric-icon violet">↗</span>
+        </div>
+        <strong id="rateCount">0%</strong>
+        <small>Progress so far</small>
+      </article>
+
+    </section>
+
+    <!-- Task Board -->
+    <section class="board-heading">
+      <div>
+        <h2>My Tasks</h2>
+        <p>Manage everything you need to get done.</p>
+      </div>
+
+      <div class="board-tools">
+        <span class="live-dot"></span>
+        Live board
+        <button id="refreshBtn" class="icon-btn" title="Refresh tasks">
+          ↻
+        </button>
+      </div>
+    </section>
+
+    <section class="board">
+
+      <!-- To Do -->
+      <div class="column">
+        <div class="column-head">
+          <div>
+            <span class="status-dot todo-dot"></span>
+            <b>To Do</b>
+            <span class="column-count" id="todoCount">0</span>
+          </div>
+          <button class="plus-btn" data-status="todo">＋</button>
+        </div>
+
+        <div class="task-stack" id="todoList"></div>
+      </div>
+
+      <!-- In Progress -->
+      <div class="column">
+        <div class="column-head">
+          <div>
+            <span class="status-dot progress-dot"></span>
+            <b>In Progress</b>
+            <span class="column-count" id="progressColumnCount">0</span>
+          </div>
+          <button class="plus-btn" data-status="progress">＋</button>
+        </div>
+
+        <div class="task-stack" id="progressList"></div>
+      </div>
+
+      <!-- Completed -->
+      <div class="column">
+        <div class="column-head">
+          <div>
+            <span class="status-dot done-dot"></span>
+            <b>Completed</b>
+            <span class="column-count" id="doneCount">0</span>
+          </div>
+          <button class="plus-btn" data-status="completed">＋</button>
+        </div>
+
+        <div class="task-stack" id="completedList"></div>
+      </div>
+
+    </section>
+
+    <footer>
+      To-Do List <span>·</span>
+      Plan clearly. Work calmly. Finish proudly.
+    </footer>
+
+  </main>
+</div>
+
+<!-- Create/Edit Task Popup -->
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <form class="task-modal" id="taskForm">
+
+    <button
+      type="button"
+      class="modal-close"
+      id="closeModal"
+      aria-label="Close"
+    >×</button>
+
+    <p class="eyebrow">TASK DETAILS</p>
+    <h2 id="modalTitle">Create a task</h2>
+
+    <label class="field-label" for="taskTitle">
+      Task name
+    </label>
+
+    <input
+      id="taskTitle"
+      maxlength="160"
+      placeholder="Enter your task name"
+      required
+    >
+
+    <div class="field-row">
+      <div>
+        <label class="field-label" for="taskStatus">
+          Status
+        </label>
+
+        <select id="taskStatus">
+          <option value="todo">To Do</option>
+          <option value="progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="field-label" for="taskPriority">
+          Priority
+        </label>
+
+        <select id="taskPriority">
+          <option>Low</option>
+          <option selected>Medium</option>
+          <option>High</option>
+        </select>
+      </div>
+    </div>
+
+    <p id="formMessage" role="status"></p>
+
+    <button class="primary-btn save-btn" type="submit">
+      Save Task
+    </button>
+
+  </form>
+</div>
+
+</body>
+</html>
